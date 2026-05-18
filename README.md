@@ -1,5 +1,4 @@
 # BancoMatriz
 
-Esse é um pequeno código de um sistema bancário que fiz para testas os conceitos e praticar a linguagem PHP.
-
-Conforme eu avançar nos estudos dou uma incrementada nesse programa.
+Este é um simples repostisório da programação de um pequeno sistema bancário que estou fazendo para testar meus conhecimentos em PHP.
+Conforme vou aprendendo algo novo, vou inserindo aqui no código.
