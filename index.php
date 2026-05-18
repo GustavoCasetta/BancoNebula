@@ -65,17 +65,17 @@ do{
                         break;
 
                         case 4:
-                        ($saldo, $extrato) = mostrarExtrato($saldo, $extrato); // Chama a função que mostra o extrato bancário
-                    break;
+                            list ($saldo, $extrato) = mostrarExtrato($saldo, $extrato); // Chama a função que mostra o extrato bancário
+                        break;
 
-                    case 5: // Sai do programa
-                        echo "Saindo...";
-                    break;
+                        case 5: // Sai do programa
+                            echo "Saindo...";
+                        break;
 
-                    default:
-                        echo "Opção inválida/inexistente! Verifique!\n"; // Caso uma opção inválida seja enviada
-                    break;
-                }
+                        default:
+                            echo "Opção inválida/inexistente! Verifique!\n"; // Caso uma opção inválida seja enviada
+                        break;
+                    }
 
             } while ($opcaoMenu != 5);  // o loop para quando o usuário digitar 5 (zero)
 
