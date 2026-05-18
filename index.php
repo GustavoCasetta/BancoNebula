@@ -6,7 +6,7 @@ require __DIR__ . "/app.php";
 echo "Banco Matriz\n";
 echo "1 - Entrar\n2 - Cadastrar\n0 - Sair\nDigite uma opção: ";
 $opcaoLogin = (int) trim(fgets(STDIN));
-$saldo = 0; // variável inicia em 0 (zero)
+$saldo = 0; // Variável inicia em 0 (zero)
 $extrato = [];
 
 do{
@@ -24,7 +24,7 @@ do{
                 break;
             }
 
-            $cadastroUsuario = fopen(__DIR__ . "/usuarios.txt", "a"); // Abre o arquivo e o coloca em uma variável
+            $cadastroUsuario = file(__DIR__ . "/usuarios.txt"); // Abre o arquivo e o coloca em uma variável
 
             foreach($cadastroUsuario as $nomes){ // Verifica cada nome e senha para ver se o login está correto
 
@@ -40,8 +40,6 @@ do{
                 echo "Login incorreto!\n";
                 break;
             }
-
-            fclose($cadastroUsuario); // Fecha o arquivo
 
                 do{
                     exibeMenu($usuarioLogin); // Chama a função para exibir o menu
