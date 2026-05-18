@@ -10,6 +10,7 @@ function saldoBancario($saldo){ // Função para exibir o saldo atual
     echo "Seu saldo é de: R$ " . number_format($saldo, 2, ",", ".") . "\n";
     return $saldo;
 }
+
 function depositoBancario($saldo, $extrato){ // Função para realizar depósitos
     echo "Digite o valor que deseja depositar:\n";
     $valorDeposito = (float) trim(fgets(STDIN));
@@ -22,7 +23,7 @@ function depositoBancario($saldo, $extrato){ // Função para realizar depósito
     }
     return [$saldo, $extrato];
    
-    }
+}
 
 function saqueBancario($saldo, $extrato){ // Função para realizar saques
     echo "Digite o valor que deseja sacar:\n";
