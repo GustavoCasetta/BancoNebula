@@ -7,18 +7,26 @@ echo "------------------------\n";
 }
 
 function saldoBancario($saldo){ // Função para exibir o saldo atual
+    echo "------------------------\n";
     echo "Seu saldo é de: R$ " . number_format($saldo, 2, ",", ".") . "\n";
+    echo "------------------------\n";
     return $saldo;
 }
 
 function depositoBancario($saldo, $extrato){ // Função para realizar depósitos
+    echo "------------------------\n";
     echo "Digite o valor que deseja depositar:\n";
+    echo "------------------------\n";
     $valorDeposito = (float) trim(fgets(STDIN));
     if($valorDeposito <= 0){
+        echo "------------------------\n";
         echo "Erro! O valor não pode ser negativo!\n";
+        echo "------------------------\n";
     } else {
     $saldo += $valorDeposito;
+    echo "------------------------\n";
     echo "Deposito realizado com sucesso!\n";
+    echo "------------------------\n";
     $extrato[] = "+ R$ " . number_format($valorDeposito, 2, ",", ".") . " (Depósito)";
     }
     return [$saldo, $extrato];
@@ -26,13 +34,19 @@ function depositoBancario($saldo, $extrato){ // Função para realizar depósito
 }
 
 function saqueBancario($saldo, $extrato){ // Função para realizar saques
+    echo "------------------------\n";
     echo "Digite o valor que deseja sacar:\n";
+    echo "------------------------\n";
     $valorSaque = (float) trim(fgets(STDIN));
-    if($valorSaque > $saldo || $valorsaque < 0){
+    if($valorSaque > $saldo || $valorSaque < 0){
+        echo "------------------------\n";
         echo "Erro! Saque inválido!\n";
+        echo "------------------------\n";
     } else {
         $saldo -= $valorSaque;
+        echo "------------------------\n";
         echo "Saque realizado! Aguarde o dinheiro está sendo contado!\n";
+        echo "------------------------\n";
         $extrato[] = "- R$ " . number_format($valorSaque, 2, ",", ".") . " (Saque)";
     }
     return [$saldo, $extrato];
@@ -46,8 +60,8 @@ function limparTela(){  // Função que limpa a tela após o usuário digitar um
     }
 }
 
-function mostrarExtrato($saldo, $extrato) {
-        echo "\n------------------------\n";
+function mostrarExtrato($saldo, $extrato) { // Função que mostra o extrato atual
+            echo "\n-----------------------\n";
             echo "EXTRATO\n";
             echo "-------------------------\n";
             if(empty($extrato)){
@@ -59,4 +73,3 @@ function mostrarExtrato($saldo, $extrato) {
                 echo "Saldo autal: R$ " . number_format($saldo, 2, ",", ".") . "\n";
             }
 }
-
