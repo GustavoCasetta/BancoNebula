@@ -1,75 +1,132 @@
 <?php
 
-function exibeMenu($usuarioLogin){ // Função para exibir o menu
-echo "\n------------------------\n";
-echo "Bem-vindo(a) " . $usuarioLogin . "!\n";
-echo "------------------------\n";
+require __DIR__ . "/app.php";
+
+if(!file_exists("cadastroUsuario.json")){
+    $usuario = [
+        [
+            "Login" => "Gustavo",
+            "Senha" => "senha123",
+            "Nascimento" => 2003
+        ]
+    ];
+
+file_put_contents("cadastroUsuario.json", json_encode($usuario, JSON_PRETTY_PRINT));
 }
 
-function saldoBancario($saldo){ // Função para exibir o saldo atual
-    echo "------------------------\n";
-    echo "Seu saldo é de: R$ " . number_format($saldo, 2, ",", ".") . "\n";
-    echo "------------------------\n";
-    return $saldo;
-}
+do{
+echo "- - - - - - - - - -" . "\n";
+echo "- - Banco Nébula - -" . "\n";
+echo "- - - - - - - - - -" . "\n";
+echo "1 - Entrar\n2 - Cadastrar\n0 - Sair\nDigite a opção: ";
+$opcaoLogin = (int) trim(fgets(STDIN));
+limparTela();
 
-function depositoBancario($saldo, $extrato){ // Função para realizar depósitos
-    echo "------------------------\n";
-    echo "Digite o valor que deseja depositar:\n";
-    echo "------------------------\n";
-    $valorDeposito = (float) trim(fgets(STDIN));
-    if($valorDeposito <= 0){
-        echo "------------------------\n";
-        echo "Erro! O valor não pode ser negativo!\n";
-        echo "------------------------\n";
-    } else {
-    $saldo += $valorDeposito;
-    echo "------------------------\n";
-    echo "Deposito realizado com sucesso!\n";
-    echo "------------------------\n";
-    $extrato[] = "+ R$ " . number_format($valorDeposito, 2, ",", ".") . " (Depósito)";
-    }
-    return [$saldo, $extrato];
-   
-}
+switch($opcaoLogin){
+    case 1:
+        echo "- - - - - - - - - -" . "\n";
+        echo "- - Banco Nébula - -" . "\n";
+        echo "- - - - - - - - - -" . "\n";
+        echo "Login: ";
+        $login = (string) trim(fgets(STDIN));
+        echo "Senha: ";
+        $senha = (string) trim(fgets(STDIN));
+        $loginOk = false;
 
-function saqueBancario($saldo, $extrato){ // Função para realizar saques
-    echo "------------------------\n";
-    echo "Digite o valor que deseja sacar:\n";
-    echo "------------------------\n";
-    $valorSaque = (float) trim(fgets(STDIN));
-    if($valorSaque > $saldo || $valorSaque < 0){
-        echo "------------------------\n";
-        echo "Erro! Saque inválido!\n";
-        echo "------------------------\n";
-    } else {
-        $saldo -= $valorSaque;
-        echo "------------------------\n";
-        echo "Saque realizado! Aguarde o dinheiro está sendo contado!\n";
-        echo "------------------------\n";
-        $extrato[] = "- R$ " . number_format($valorSaque, 2, ",", ".") . " (Saque)";
-    }
-    return [$saldo, $extrato];
-}
+        $dados = file_get_contents("cadastroUsuario.json");
+        $listaUsuarios = json_decode($dados, true);
 
-function limparTela(){  // Função que limpa a tela após o usuário digitar uma opção
-    if (PHP_OS_FAMILY === 'Windows') {
-        system('cls');
-    } else {
-        system('clear');
-    }
-}
+        foreach($listaUsuarios as $cadastro){
+            if(strtolower($login) === strtolower($cadastro["Login"]) && strtolower($senha) === strtolower($cadastro["Senha"])){
+                $loginOk = true;
+            };
+        }
 
-function mostrarExtrato($saldo, $extrato) { // Função que mostra o extrato atual
-            echo "\n-----------------------\n";
-            echo "EXTRATO\n";
-            echo "-------------------------\n";
-            if(empty($extrato)){
-                echo "Nenhuma movimentação foi realizada!\n";
-            } else {
-                foreach($extrato as $mov){
-                    echo $mov . "\n";
-                }
-                echo "Saldo autal: R$ " . number_format($saldo, 2, ",", ".") . "\n";
+        file_put_contents("cadastroUsuario.json", json_encode($listaUsuarios, JSON_PRETTY_PRINT));
+
+        if($loginOk === false){
+            echo "Login incorreto!" . "\n";
+        } else {
+            $saldo = 0; 
+            $extrato = [];
+            do{
+                echo "- - - - - - - - - -" . "\n";
+                echo "Bem-vindo(a) " . $login . "\n";
+                echo "- - - - - - - - - -" . "\n";
+                echo "1 - Saldo\n2 - Depositar\n3 - Sacar\n4 - Ver extrato\n5 - Sair\nDigite a opção: ";
+                $opcaoMenu = (int) trim(fgets(STDIN));
+                limparTela();
+
+                switch($opcaoMenu){
+                    case 1:
+                        saldoBancario($saldo);
+                    break;
+                    case 2:
+                        list ($saldo, $extrato) = depositoBancario($saldo, $extrato);
+                    break;
+                    case 3:
+                        list ($saldo, $extrato) = saqueBancario($saldo, $extrato);
+                    break;
+                    case 4:
+                        list ($saldo, $extrato) = mostrarExtrato($saldo, $extrato);
+                    break;
+                    case 5:
+                        echo "Saindo..." . "\n";
+                    break;
+                    default:
+                        echo "Opção Inválida!" . "\n";
+                    break;
             }
+            }while($opcaoMenu != 5);
+        }
+    break;
+    case 2:
+        echo "- - - - - - - - - -" . "\n";
+        echo "- - - CADASTRO - - -" . "\n";
+        echo "- - - - - - - - - -" . "\n";
+        echo "Insira um nome para login: ";
+        $nomeCadastro = (string) trim(fgets(STDIN));
+        echo "Insira uma senha: ";
+        $senhaCadastro = (string) trim(fgets(STDIN));
+        echo "Confirme a senha: ";
+        $senhaConfirmacao = (string) trim(fgets(STDIN));
+        echo "Informe seu ano de nascimento: ";
+        $anoCadastro = (int) trim(fgets(STDIN));
+
+        if($senhaCadastro !== $senhaConfirmacao){
+            echo "As senhas não conferem!" . "\n";
+            break;
+        }
+
+        $novoCadastro = [
+            "Login" => $nomeCadastro,
+            "Senha" => $senhaCadastro,
+            "Nascimento" => $anoCadastro
+        ];
+
+        $dados = file_get_contents("cadastroUsuario.json");
+        $listaUsuarios = json_decode($dados, true);
+
+        foreach($listaUsuarios as $cadastro){
+            if(strtolower($nomeCadastro) === strtolower($cadastro["Login"])){
+                echo "O usuário já contem cadastro!" . "\n";
+                break;
+            }
+        }
+
+        if(!$usuarioExiste){
+            $listaUsuarios[] = $novoCadastro;
+
+            file_put_contents("cadastroUsuario.json", json_encode($listaUsuarios, JSON_PRETTY_PRINT));
+
+            echo "Usuário cadastrado!" . "\n";
+        }
+    break;
+    case 0:
+        echo "Saindo..." . "\n";
+    break;
+    default:
+        echo "Opção inválida!" . "\n";
+    break;
 }
+}while($opcaoLogin != 0);
